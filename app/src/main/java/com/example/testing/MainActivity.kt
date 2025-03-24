@@ -9,9 +9,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.testing.ui.theme.TestingTheme
+import com.example.testing.ui.theme.ToDoListScreenRoot
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,8 +25,18 @@ class MainActivity : ComponentActivity() {
             TestingTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     ToDoListScreenRoot(modifier = Modifier.padding(innerPadding))
+                    UnnecessaryRecomposition()
                 }
             }
         }
     }
+}
+
+@Composable
+fun UnnecessaryRecomposition() {
+    var text by remember { mutableStateOf("Initial") }
+    val someValue = 10;
+
+    Text(text = "$text $someValue")
+    text = "Updated"
 }
