@@ -43,9 +43,9 @@ fun TestUpdateUI(modifier: Modifier) {
     Column(modifier = modifier) {
         Text(text = text)
         Button(onClick = {
-            CoroutineScope(Dispatchers.IO).launch { // Directly using CoroutineScope(Dispatchers.IO)
+            CoroutineScope(Dispatchers.IO).launch {
                 delay(2000)
-                text = "Updated Text from Background" // Directly updating state from background thread!!!
+                text = "Updated Text from Background"
             }
         }) {
             Text("Update Text")
