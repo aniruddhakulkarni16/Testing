@@ -14,13 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.testing.ui.theme.TestingTheme
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,13 +40,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TestUpdateUI(modifier: Modifier) {
     var text by remember { mutableStateOf("Initial Text") }
-
+    val scope = rememberCoroutineScope()
     Column(modifier = modifier) {
         Text(text = text)
         Button(onClick = {
-            CoroutineScope(Dispatchers.IO).launch {
+            scope.launch(Dispatchers.IO) {
                 delay(2000)
-                text = "Updated Text from Background"
+                withContext(Dispatchers.Main) {
+                    text = "Updated Text from Background"
+                }
             }
         }) {
             Text("Update Text")
